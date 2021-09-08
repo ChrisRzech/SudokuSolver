@@ -1,4 +1,5 @@
 #include "SudokuDrawer.hpp"
+#include "Resources.hpp"
 #include <iostream>
 
 SudokuDrawer::SudokuDrawer(const Sudoku& sudoku)
@@ -45,4 +46,21 @@ void SudokuDrawer::draw(sf::RenderTarget& target, sf::RenderStates states) const
     }
     
     target.draw(lines);
+    
+    sf::Text text;
+    text.setFont(Resources::getResources().font);
+    for(int row = 0; row < Sudoku::BOARD_SIZE; row++)
+    {
+        for(int col = 0; col < Sudoku::BOARD_SIZE; col++)
+        {
+            std::optional<int> cellValueOptional = m_sudoku.getValue(row, col);
+            
+            if(cellValueOptional.has_value())
+            {
+                text.setPosition(spacingX * col, spacingY * row);
+                text.setString(std::to_string(cellValueOptional.value()));
+                target.draw(text);
+            }
+        }
+    }
 }
