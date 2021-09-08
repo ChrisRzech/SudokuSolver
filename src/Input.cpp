@@ -1,7 +1,7 @@
 #include "input.hpp"
 
 Input::Input(const sf::Window& window, int holdThreshold, const std::vector<Key>& keysToPoll)
-    : m_window(window), m_keysToPoll(keysToPoll)
+    : m_window{window}, m_keysToPoll{keysToPoll}
 {
     setHoldThreshold(holdThreshold);
     

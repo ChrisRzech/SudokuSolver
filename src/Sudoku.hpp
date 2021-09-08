@@ -12,5 +12,5 @@ public:
     std::optional<int> getValue(int row, int col) const;
 
 private:
-    std::array<std::array<std::optional<int>, BOARD_SIZE>, BOARD_SIZE> board;
+    std::array<std::array<std::optional<int>, BOARD_SIZE>, BOARD_SIZE> m_board;
 };

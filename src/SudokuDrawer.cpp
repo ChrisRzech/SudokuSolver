@@ -2,13 +2,13 @@
 #include <iostream>
 
 SudokuDrawer::SudokuDrawer(const Sudoku& sudoku)
-    : sudoku{sudoku}
+    : m_sudoku{sudoku}
 {
     //Do nothing
 }
 
 SudokuDrawer::SudokuDrawer(const Sudoku& sudoku, sf::Vector2f position, sf::Vector2u size)
-    : sudoku{sudoku}, position{position}, size{size}
+    : m_sudoku{sudoku}, position{position}, size{size}
 {
     //Do nothing
 }

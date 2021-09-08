@@ -16,5 +16,5 @@ public:
     sf::Vector2u size;
 
 private:
-    const Sudoku& sudoku;
+    const Sudoku& m_sudoku;
 };
