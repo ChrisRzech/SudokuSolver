@@ -57,8 +57,15 @@ void SudokuDrawer::draw(sf::RenderTarget& target, sf::RenderStates states) const
             
             if(cellValueOptional.has_value())
             {
-                text.setPosition(spacingX * col, spacingY * row);
                 text.setString(std::to_string(cellValueOptional.value()));
+                
+                /* Center text in cell */
+                float textWidth = text.getLocalBounds().width;
+                float textHeight = text.getLocalBounds().height;
+                float offsetX = spacingX / 2 - textWidth / 2;
+                float offsetY = spacingY / 2 - textHeight / 2;
+                text.setPosition(spacingX * col + offsetX, spacingY * row + offsetY);
+                
                 target.draw(text);
             }
         }
