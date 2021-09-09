@@ -70,7 +70,7 @@ std::map<int, int> getSudokuFixedColorings(const Sudoku& sudoku)
     return fixedColorings;
 }
 
-std::map<int, int> colorSudokuGraphBacktracking(const UndirectedGraph<int>& graph, std::map<int, int> colorings, int cell)
+std::map<int, int> colorSudokuGraphBacktracking(const UndirectedGraph<int>& graph, std::map<int, int> colorings, const std::map<int, int> fixedColorings, int cell)
 {
     constexpr int MIN_COLOR = 1;
     constexpr int MAX_COLOR = 9;
@@ -84,7 +84,6 @@ std::map<int, int> colorSudokuGraphBacktracking(const UndirectedGraph<int>& grap
         /* Check if the cell has the same color as its neighbor */
         for(int neighbor : neighbors)
         {
-            //std::cout << neighbor << std::endl; 
             if(colorings.count(neighbor) != 0 && color == colorings.at(neighbor))
                 return false;
         }
@@ -96,15 +95,18 @@ std::map<int, int> colorSudokuGraphBacktracking(const UndirectedGraph<int>& grap
     if(cell >= Sudoku::BOARD_SIZE * Sudoku::BOARD_SIZE)
         return colorings;
     
+    /* Is this cell fixed? */
+    if(fixedColorings.count(cell) != 0)
+        return colorSudokuGraphBacktracking(graph, colorings, fixedColorings, cell + 1);
+    
+    /* Try every color for this cell */
     for(int color = MIN_COLOR; color <= MAX_COLOR; color++)
     {
-        //std::cout << "Cell: " << cell << "\t"
-        //          << "Color: " << color << std::endl;
         if(isValidColoring(cell, color))
         {
             colorings[cell] = color;
             
-            std::map<int, int> newColorings = colorSudokuGraphBacktracking(graph, colorings, cell + 1);
+            std::map<int, int> newColorings = colorSudokuGraphBacktracking(graph, colorings, fixedColorings, cell + 1);
             
             if(!newColorings.empty())
                 return newColorings;
@@ -117,7 +119,7 @@ std::map<int, int> colorSudokuGraphBacktracking(const UndirectedGraph<int>& grap
 
 std::map<int, int> colorSudokuGraph(const UndirectedGraph<int>& graph, std::map<int, int> fixedCells)
 {
-    return colorSudokuGraphBacktracking(graph, fixedCells, 0);
+    return colorSudokuGraphBacktracking(graph, fixedCells, fixedCells, 0);
 }
 
 void fillSudokuWithColorings(Sudoku& sudoku, std::map<int, int> colorings)
