@@ -1,6 +1,5 @@
 #include "SudokuDrawer.hpp"
 #include "Resources.hpp"
-#include <iostream>
 
 SudokuDrawer::SudokuDrawer(const Sudoku& sudoku)
     : m_sudoku{sudoku}

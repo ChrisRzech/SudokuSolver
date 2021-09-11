@@ -1,6 +1,5 @@
 #include "SudokuSolver.hpp"
 #include "UndirectedGraph.hpp"
-#include <iostream>
 
 UndirectedGraph<int> getSudokuGraph()
 {
