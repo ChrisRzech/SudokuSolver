@@ -1,14 +1,14 @@
 #include "SudokuDrawer.hpp"
 #include "Resources.hpp"
 
-SudokuDrawer::SudokuDrawer(const Sudoku& sudoku)
-    : m_sudoku{sudoku}
+SudokuDrawer::SudokuDrawer(const Sudoku& sudoku, const int& row, const int& col)
+    : SudokuDrawer{sudoku, row, col, sf::Vector2f{0, 0}, sf::Vector2u{0, 0}}
 {
     //Do nothing
 }
 
-SudokuDrawer::SudokuDrawer(const Sudoku& sudoku, sf::Vector2f position, sf::Vector2u size)
-    : m_sudoku{sudoku}, position{position}, size{size}
+SudokuDrawer::SudokuDrawer(const Sudoku& sudoku, const int& row, const int& col, sf::Vector2f position, sf::Vector2u size)
+    : m_sudoku{sudoku}, m_row{row}, m_col{col}, position{position}, size{size}
 {
     //Do nothing
 }
@@ -25,6 +25,7 @@ std::pair<int, int> SudokuDrawer::convertPointToCell(sf::Vector2f point) const
 
 void SudokuDrawer::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
+    /* Draw board */
     sf::VertexArray lines(sf::Lines, (Sudoku::BOARD_SIZE - 1) * 2);
     float spacingX = size.x / Sudoku::BOARD_SIZE;
     float spacingY = size.y / Sudoku::BOARD_SIZE;
@@ -46,6 +47,7 @@ void SudokuDrawer::draw(sf::RenderTarget& target, sf::RenderStates states) const
     
     target.draw(lines);
     
+    /* Draw numbers */
     sf::Text text;
     text.setFont(Resources::getResources().font);
     for(int row = 0; row < Sudoku::BOARD_SIZE; row++)
@@ -69,4 +71,13 @@ void SudokuDrawer::draw(sf::RenderTarget& target, sf::RenderStates states) const
             }
         }
     }
+    
+    /* Draw cursor */
+    sf::VertexArray cursor(sf::Lines, 2);
+    float cursorLength = spacingX * 0.5;
+    float offsetX = spacingX / 2 - cursorLength / 2;
+    float offsetY = spacingY * 0.8;
+    cursor.append(sf::Vertex{sf::Vector2f{spacingX * m_col + offsetX, spacingY * m_row + offsetY}, sf::Color::White});
+    cursor.append(sf::Vertex{sf::Vector2f{spacingX * m_col + offsetX + cursorLength, spacingY * m_row + offsetY}, sf::Color::White});
+    target.draw(cursor);
 }
