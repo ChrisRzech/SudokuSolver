@@ -84,7 +84,8 @@ int main()
         Input::Key::Space,
         Input::Key::Backspace,
         Input::Key::Enter,
-        Input::Key::Escape
+        Input::Key::Escape,
+        Input::Key::LeftClick
     };
     Input input(window, 10, polledInputs);
     
@@ -157,6 +158,12 @@ int main()
             clearSudoku(sudoku, row, col);
         else if(input.isPressed(Input::Key::Enter))
             solveSudoku(sudoku, row, col);
+        else if(input.isPressed(Input::Key::LeftClick))
+        {
+            std::pair<int, int> cell = sudokuDrawer.convertPointToCell(static_cast<sf::Vector2f>(input.mousePosition()));
+            row = cell.first;
+            col = cell.second;
+        }
         
         /* Render */
         window.clear();
