@@ -20,7 +20,8 @@ std::pair<int, int> SudokuDrawer::convertPointToCell(sf::Vector2f point) const
     
     point -= position;
     
-    return std::make_pair(point.x / spacingX, point.y / spacingY);
+    //return (row, col)
+    return std::make_pair(point.y / spacingY, point.x / spacingX);
 }
 
 void SudokuDrawer::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -76,7 +77,7 @@ void SudokuDrawer::draw(sf::RenderTarget& target, sf::RenderStates states) const
     sf::VertexArray cursor(sf::Lines, 2);
     float cursorLength = spacingX * 0.5;
     float offsetX = spacingX / 2 - cursorLength / 2;
-    float offsetY = spacingY * 0.8;
+    float offsetY = spacingY * 0.85;
     cursor.append(sf::Vertex{sf::Vector2f{spacingX * m_col + offsetX, spacingY * m_row + offsetY}, sf::Color::White});
     cursor.append(sf::Vertex{sf::Vector2f{spacingX * m_col + offsetX + cursorLength, spacingY * m_row + offsetY}, sf::Color::White});
     target.draw(cursor);
