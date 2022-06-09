@@ -74,6 +74,9 @@ int main()
     sf::VideoMode windowVideoMode(600, 600);
     sf::RenderWindow window(windowVideoMode, "Sudoku Solver", sf::Style::Close);
     window.setFramerateLimit(60);
+    sf::Image windowIcon;
+    windowIcon.loadFromFile("res/window_icon.png");
+    window.setIcon(windowIcon.getSize().x, windowIcon.getSize().y, windowIcon.getPixelsPtr());
     bool windowIsFocused = true;
     
     const std::vector<Input::Key> polledInputs =
