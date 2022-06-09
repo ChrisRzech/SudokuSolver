@@ -1,9 +1,5 @@
 PROJECT_NAME = SudokuSolver
 
-# Compiler
-CXX = g++
-CXXFLAGS = -W -std=c++17
-
 # Directories
 SRC_DIR = src
 RES_DIR = res
@@ -12,34 +8,51 @@ BIN_DIR = bin
 # Files
 EXEC = $(BIN_DIR)/$(PROJECT_NAME)
 SRCS = $(wildcard $(SRC_DIR)/*.cpp)
-# TODO add object file variable and rules
-# to allow rebuilding updated files only
+OBJS = $(SRCS:$(SRC_DIR)/%.cpp=$(BIN_DIR)/%.o)
+
+# Automatic prerequisites
+REQS = $(SRCS:$(SRC_DIR)/%.cpp=$(BIN_DIR)/%.d)
+REQFLAGS = -MMD
 
 # SFML library (edit paths as necessary)
 SFML_DIR = C:/SFML-2.5.1
-SFML_BIN = $(SFML_DIR)/bin
-SFML_LIB = -L $(SFML_DIR)/lib
-SFML_INCLUDE = -I $(SFML_DIR)/include
-SFML_FLAGS = -lsfml-graphics -lsfml-window -lsfml-system
+SFML_BIN_DIR = $(SFML_DIR)/bin
+SFML_INC_DIR = $(SFML_DIR)/include
+SFML_LIB_DIR = $(SFML_DIR)/lib
+SFML_LIBS = sfml-graphics sfml-window sfml-system
+SFML_FLAGS = -I$(SFML_INC_DIR) -L$(SFML_LIB_DIR) $(SFML_LIBS:%=-l%)
+
+# Compiler
+CXX = g++
+CXXFLAGS = -W -std=c++17
+
+#####################
+# Do not edit below #
+#####################
 
 .DEFAULT_GOAL = build
 
-# Build
-.PHONY: build
-build:
-	mkdir -p $(BIN_DIR)
-	cp $(SFML_BIN)/sfml-graphics-2.dll $(BIN_DIR)/
-	cp $(SFML_BIN)/sfml-window-2.dll $(BIN_DIR)/
-	cp $(SFML_BIN)/sfml-system-2.dll $(BIN_DIR)/
-	cp -r $(RES_DIR)/ $(BIN_DIR)/
-	$(CXX) $(CXXFLAGS) -o $(EXEC) $(SRCS) $(SFML_INCLUDE) $(SFML_LIB) $(SFML_FLAGS)
+setup_bin:
+	$(info Setting up bin directory...)
+	@mkdir -p $(BIN_DIR)
+	@cp $(SFML_BIN_DIR)/sfml-graphics-2.dll $(BIN_DIR)/
+	@cp $(SFML_BIN_DIR)/sfml-window-2.dll $(BIN_DIR)/
+	@cp $(SFML_BIN_DIR)/sfml-system-2.dll $(BIN_DIR)/
+	@cp -r $(RES_DIR)/ $(BIN_DIR)/
+	$(info Done.)
 
-# Run
-.PHONY: run
+build: $(OBJS)
+	$(CXX) $(CXXFLAGS) -o $(EXEC) $(OBJS) $(SFML_FLAGS)
+
 run:
-	./$(BIN_DIR)/$(PROJECT_NAME)
+	./$(EXEC)
 
-# Clean
-.PHONY: clean
 clean:
 	rm -r $(BIN_DIR)
+
+$(BIN_DIR)/%.o: $(SRC_DIR)/%.cpp | setup_bin
+	$(CXX) -c $(CXXFLAGS) $(REQFLAGS) -o $@ $< $(SFML_FLAGS)
+
+.PHONY: setup_bin build run clean
+
+-include $(REQS)
