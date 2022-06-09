@@ -8,7 +8,7 @@ SudokuDrawer::SudokuDrawer(const Sudoku& sudoku, const int& row, const int& col)
 }
 
 SudokuDrawer::SudokuDrawer(const Sudoku& sudoku, const int& row, const int& col, sf::Vector2f position, sf::Vector2u size)
-    : m_sudoku{sudoku}, m_row{row}, m_col{col}, position{position}, size{size}
+    : position{position}, size{size}, m_sudoku{sudoku}, m_row{row}, m_col{col}
 {
     //Do nothing
 }
@@ -46,7 +46,7 @@ void SudokuDrawer::draw(sf::RenderTarget& target, sf::RenderStates states) const
         lines.append(sf::Vertex{sf::Vector2f{position.x + size.x, startingY + spacingY * i}, color});
     }
     
-    target.draw(lines);
+    target.draw(lines, states);
     
     /* Draw numbers */
     sf::Text text;
@@ -68,7 +68,7 @@ void SudokuDrawer::draw(sf::RenderTarget& target, sf::RenderStates states) const
                 float offsetY = spacingY / 2 - textHeight / 2;
                 text.setPosition(spacingX * col + offsetX, spacingY * row + offsetY);
                 
-                target.draw(text);
+                target.draw(text, states);
             }
         }
     }
