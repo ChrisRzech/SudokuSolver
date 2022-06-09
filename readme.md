@@ -20,4 +20,4 @@ $ make run
 ```
 
 ## Controls
-There is a cursor that shows the current square that will be edited. Pressing 1-9 will overwrite the current square, and the cursor will advance. In addition, you can press space to advance the cursor. Pressing backspace will erase the square behind the cursor. Finally, pressing enter will attempt to solve the sudoku puzzle.
+There is a cursor that shows the current square that will be edited. Pressing 1-9 will overwrite the current square, and the cursor will advance. In addition, you can press space to advance the cursor. Pressing backspace will erase the square behind the cursor. For convenience, you can click on a square to move the cursor there for quick edits. Finally, pressing enter will attempt to solve the sudoku puzzle.
